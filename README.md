@@ -1,6 +1,6 @@
 # ✨ メンション & 絵文字対応エディタ（デモ）
 
-ライブラリを使わずに[contentable](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/contenteditable)を使って実装したデモです。
+ライブラリを使わずに[contenteditable](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/contenteditable)を使って実装したデモです。
 
 ![動画](public/動画.gif)
 
