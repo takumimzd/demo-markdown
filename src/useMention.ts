@@ -1,15 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 
-export const useMentionEditor = () => {
-  const editorRef = useRef<HTMLDivElement>(null)
-  const popoverRef = useRef<HTMLDivElement>(null)
-
+export const useMention = (options: { onInsert: (mentionNode: Node) => void }) => {
   const [candidates, setCandidates] = useState<string[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
   const [showPopover, setShowPopover] = useState(false)
-  const [range, setRange] = useState<Range | null>(null)
-  const [isComposing, setIsComposing] = useState(false)
   const [currentKeyword, setCurrentKeyword] = useState('')
+  const [range, setRange] = useState<Range | null>(null)
 
   const users = [
     'alice', 'bob', 'charlie', 'david', 'eve',
@@ -57,13 +53,8 @@ export const useMentionEditor = () => {
     }
   }
 
-  const handleInput = () => {
-    if (isComposing) return
-    updateMentionCandidates()
-  }
-
   const insertMention = (name: string) => {
-    if (!range || !editorRef.current) return
+    if (!range) return
 
     const textNode = range.startContainer as Text
     const offset = range.startOffset
@@ -78,86 +69,28 @@ export const useMentionEditor = () => {
     Object.assign(mentionEl.style, mentionStyle)
 
     const afterText = document.createTextNode(after)
-
     const parent = textNode.parentNode!
     parent.replaceChild(afterText, textNode)
     if (newText) {
       parent.insertBefore(document.createTextNode(newText), afterText)
     }
     parent.insertBefore(mentionEl, afterText)
+    parent.insertBefore(document.createTextNode(' '), afterText) // ← スペース追加
 
-    placeCaretAfter(mentionEl)
+    options.onInsert(mentionEl)
     setShowPopover(false)
     setCurrentKeyword('')
   }
 
-  const placeCaretAfter = (node: Node) => {
-    const sel = window.getSelection()
-    const newRange = document.createRange()
-    newRange.setStartAfter(node)
-    newRange.collapse(true)
-    sel?.removeAllRanges()
-    sel?.addRange(newRange)
-    editorRef.current?.focus()
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (!showPopover || isComposing) return
-
-    if (e.key === 'ArrowDown') {
-      e.preventDefault()
-      setActiveIndex((prev) => (prev + 1) % candidates.length)
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault()
-      setActiveIndex((prev) => (prev - 1 + candidates.length) % candidates.length)
-    } else if (e.key === 'Enter') {
-      e.preventDefault()
-      insertMention(candidates[activeIndex])
-    } else if (e.key === 'Escape') {
-      setShowPopover(false)
-    }
-  }
-
-  const handleCompositionStart = () => {
-    setIsComposing(true)
-  }
-
-  const handleCompositionEnd = () => {
-    setIsComposing(false)
-    setTimeout(updateMentionCandidates, 0) // 終了後に反映
-  }
-
-  useEffect(() => {
-    const container = popoverRef.current
-    if (!container) return
-
-    const activeItem = container.querySelector('[data-active="true"]') as HTMLElement | null
-    if (activeItem) {
-      const containerTop = container.scrollTop
-      const containerBottom = containerTop + container.clientHeight
-      const itemTop = activeItem.offsetTop
-      const itemBottom = itemTop + activeItem.offsetHeight
-
-      if (itemTop < containerTop) {
-        container.scrollTop = itemTop
-      } else if (itemBottom > containerBottom) {
-        container.scrollTop = itemBottom - container.clientHeight
-      }
-    }
-  }, [activeIndex])
-
   return {
-    editorRef,
-    popoverRef,
     candidates,
     activeIndex,
     showPopover,
     currentKeyword,
-    handleInput,
-    handleKeyDown,
-    handleCompositionStart,
-    handleCompositionEnd,
+    updateMentionCandidates,
     insertMention,
+    setActiveIndex,
+    setShowPopover,
   }
 }
 
