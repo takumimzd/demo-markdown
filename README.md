@@ -2,8 +2,6 @@
 
 ライブラリを使わずに[contentable](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/contenteditable)を使って実装したデモです。
 
-
-![スクリーンショット](public/スクショ.png)
 ![動画](public/動画.gif)
 
 ## 🚀 機能
