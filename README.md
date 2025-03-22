@@ -3,6 +3,9 @@
 ライブラリを使わずに[contentable](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/contenteditable)を使って実装したデモです。
 
 
+![スクリーンショット](public/スクショ.png)
+![動画](public/動画.mov)
+
 ## 🚀 機能
 
 ### 🧑‍🤝‍🧑 メンション機能
@@ -18,3 +21,4 @@
 - 登録済みの絵文字コードのみが対象
 - 右上の `😊` ボタンから絵文字をパネル選択して挿入も可能
 - キャレット位置が維持されるため、連続クリックでも自然に入力できます
+
