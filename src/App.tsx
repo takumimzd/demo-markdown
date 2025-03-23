@@ -1,10 +1,31 @@
-import { Editor } from './Editor'
+import { useState } from 'react'
+import { Editor as TipTapEditor } from './TipTap/Editor'
+import { Editor as ContentEditableEditor } from './Editor'
 import styled from 'styled-components'
 
 function App() {
+  const [useTiptap, setUseTiptap] = useState(true)
+
   return (
     <AppContainer>
-      <Title>メンション & 絵文字対応エディタ</Title>
+      <Header>
+        <Title>メンション & 絵文字対応エディタ</Title>
+        <ToggleGroup>
+          <ToggleButton
+            active={useTiptap}
+            onClick={() => setUseTiptap(true)}
+          >
+            Tiptap Editor
+          </ToggleButton>
+          <ToggleButton
+            active={!useTiptap}
+            onClick={() => setUseTiptap(false)}
+          >
+            ContentEditable Editor
+          </ToggleButton>
+        </ToggleGroup>
+      </Header>
+
       <Description>
         <SectionTitle>🧑‍🤝‍🧑 メンション機能</SectionTitle>
         <ul>
@@ -22,7 +43,8 @@ function App() {
           <li>連続クリックしてもキャレットがずれず、正しい位置に絵文字が挿入されます。</li>
         </ul>
       </Description>
-      <Editor />
+
+      {useTiptap ? <TipTapEditor /> : <ContentEditableEditor />}
     </AppContainer>
   )
 }
@@ -33,9 +55,36 @@ const AppContainer = styled.div`
   margin: 0 auto;
 `
 
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+`
+
 const Title = styled.h2`
   font-size: 20px;
   margin-bottom: 1rem;
+`
+
+const ToggleGroup = styled.div`
+  display: flex;
+  gap: 8px;
+`
+
+const ToggleButton = styled.button<{ active: boolean }>`
+  padding: 6px 12px;
+  font-size: 14px;
+  background: ${({ active }) => (active ? '#6366f1' : '#e0e7ff')};
+  color: ${({ active }) => (active ? 'white' : '#374151')};
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: ${({ active }) => (active ? 'bold' : 'normal')};
+  &:hover {
+    background: ${({ active }) => (active ? '#4f46e5' : '#c7d2fe')};
+  }
 `
 
 const Description = styled.div`
