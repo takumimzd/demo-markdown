@@ -60,6 +60,7 @@ export const Editor = () => {
       )}
       <GlobalStyle />
       <StyledEditorContent editor={editor} />
+      <Button onClick={() => {console.log(editor?.getText())}}>送信</Button>
     </EditorContainer>
   )
 }

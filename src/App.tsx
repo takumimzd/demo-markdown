@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Editor as TipTapEditor } from './TipTap/Editor'
-import { Editor as ContentEditableEditor } from './Editor'
+import { Editor as ContentEditableEditor } from './Contenteditable/Editor'
 import styled from 'styled-components'
 
 function App() {

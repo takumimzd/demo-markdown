@@ -1,14 +1,16 @@
 import { useEditor as useTiptapEditor } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
+import Document from '@tiptap/extension-document'
+import Text from '@tiptap/extension-text'
+import Paragraph from '@tiptap/extension-paragraph'
 import { useEmoji } from './useEmoji'
 import { useMention } from './Mention/useMention'
 
 export const useEditor = (onUpdate: () => void) => {
-  const emoji = useEmoji()
-  const mention = useMention()
+  const Emoji = useEmoji()
+  const Mention = useMention()
 
   return useTiptapEditor({
-    extensions: [StarterKit, emoji, mention],
+    extensions: [Document, Text, Paragraph, Emoji, Mention],
     onUpdate,
     content: '<p></p>',
   })

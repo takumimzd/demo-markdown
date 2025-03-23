@@ -1,6 +1,6 @@
 export const useEmoji = () => {
   const emojis: Record<string, string> = {
-    smile: '😄',
+    smile: '<img src="/public/スクショ.png" />',
     heart: '❤️',
     thumbs_up: '👍',
     fire: '🔥',
